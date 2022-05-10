@@ -34,13 +34,13 @@
 					<div>
 						<p>
 							<c:if test="${myInfo.mem_pic == 'profile.png'}">
-								<img id="defaultProfile"
+								<img style="margin-left:145px;" id="defaultProfile"
 									src="<c:url value='/resources/image/profile.png'/>" width="220"
 									height="170" />
 							</c:if>
 							
 							<c:if test="${!empty myInfo.mem_storedpic}">
-								<img id="memProfile"
+								<img style="margin-left:145px;" id="memProfile"
 									src="<c:url value='/images/${myInfo.mem_storedpic}'/>" width="220"
 									height="170" />
 							</c:if>
