@@ -9,7 +9,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/appraisalbootstrap.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/star.css">
 		<title>search</title>
 	</head>
 	<body>
@@ -39,7 +38,7 @@
 </nav>	
 		<br>
 		
-		<div id="searchBook"></div>
+		<div style="text-align: center;" id="searchBook"></div>
 	
 		<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 		<script>
@@ -58,14 +57,11 @@
 		        		$("#searchBook").append("<div>검색에 일치하는 정보를 찾지 못하였습니다.</div>");
 		        		return;
 		        	}
-		        	$('#main_add_info').empty();
+		        	
 		        	for (var i = 0; i < 10; i++){
-		                $("#searchBook").append("<img src='" + msg.documents[i].thumbnail + "'/><br>");		//표지
-		                $("#searchBook").append("<h2><a href='/read/"+ msg.documents[i].isbn.slice(-13)+"?query="+$("#query").val()+ "'>" + msg.documents[i].title + "</a></h2>");	//제목
-		                $("#searchBook").append("<strong>저자:</strong> " + msg.documents[i].authors + "<br>");		//저자	
-		                $("#searchBook").append("<strong>출판사:</strong> " + msg.documents[i].publisher + "<br>");		//출판사
-		                $("#searchBook").append("<strong>줄거리:</strong> " + msg.documents[i].contents + "...<br>");		//줄거리
-		            	$("#searchBook").append("<strong>ISBN:</strong>" + msg.documents[i].isbn + "<br>");	//일련번호
+		                $("#searchBook").append("<img style='width:300px; height:400px;' src='" + msg.documents[i].thumbnail + "' style='text-align:center' /><br>");		//표지
+		                $("#searchBook").append("<h5><a href='/read/"+ msg.documents[i].isbn.slice(-13)+"?query="+$("#query").val()+ "'>" + msg.documents[i].title + "</a></h5>");	//제목
+		                $("#searchBook").append("저자: " + msg.documents[i].authors + "<br><br><br>");		//저자	
 		            }
 		        })
 		        .fail(function () {

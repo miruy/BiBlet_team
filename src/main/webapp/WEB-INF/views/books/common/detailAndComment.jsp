@@ -42,15 +42,14 @@
 </nav>
 
 
-	<div id="searchBook"></div>
-
-<div id="detail">	
+<div style="padding-left:200px;" id="detail">	
 		<div class="container">
 		 	<div class="row">
 			 	<div style="margin-top: 40px;" class="col-4">
 					<div id="bookThumbnail"></div>
 				</div>
 				<div class="col-6">
+				<div style="padding-top:40px; padding-left:100px;" id="comment">
 					<div style="margin-top: 40px;" id="bookTitle" ></div>	
 					<form:form method="post" commandName="insertCmd" onsubmit="return bookSubmit()">
 					
@@ -109,10 +108,12 @@
 						</div>
 						
 					</form:form>
-					
+					</div>
 				</div>
 			</div>
 		</div>
+		
+	</div>	
 	
 	<div class="container">
 		<div class="row">
@@ -145,10 +146,10 @@
 							    <tr>
 							      <th scope="col"><div style="padding-left:70px;">ID</div></th>
 							      <th scope="col"><div style="padding-left:70px;">코멘트</div></th>
-							      <th scope="col"><div style="padding-left:50px;">평가</div></th>
+							      <th scope="col"><div style="padding-left:90px;">평가</div></th>
 							      <th scope="col"><div style="padding-left:50px;">독서 시작 날짜</div></th>
 							      <th scope="col"><div style="padding-left:40px;">독서 완료 날짜</div></th>
-							      <th scope="col"><div style="padding-left:40px;">수정/삭제</div></th>
+							      <th scope="col"><div style="padding-left:30px;">수정/삭제</div></th>
 							    </tr>
 							 </thead>
 							 <tbody>
@@ -159,7 +160,15 @@
 									     	<div style="padding-left:60px;">${comment.mem_id}</div>
 									      </th>
 									      	<td><div id="content${comment.appraisal_num}" style="padding-left:60px;">${comment.book_comment}</div></td>
-										    <td><div id="star${comment.appraisal_num}" style="padding-left:60px;">${comment.star}</div></td>
+										    <td>
+										    	<div id="star${comment.appraisal_num}" style="padding-left:60px;">
+										    		<c:if test="${comment.star==1 }">★☆☆☆☆</c:if> 
+													<c:if test="${comment.star==2 }">★★☆☆☆</c:if> 
+													<c:if test="${comment.star==3 }">★★★☆☆</c:if> 
+													<c:if test="${comment.star==4 }">★★★★☆</c:if> 
+													<c:if test="${comment.star==5 }">★★★★★</c:if>	
+										    	</div>
+										    </td>
 										    <td><div id="startDate${comment.appraisal_num}" style="padding-left:50px;">${comment.start_date}</div></td>
 										    <td><div id="endDate${comment.appraisal_num}" style="padding-left:40px;">${comment.end_date}</div></td>
 									      <td>
@@ -179,10 +188,6 @@
 									  </c:forEach>
 									 	</c:if>
 							 </tbody>
-	<%-- 								평가 번호 : ${commentsByMember.appraisal_num}  --%>
-	<%-- 								프로필 : ${commentsByMember.mem_pic}  --%>
-	<%-- 								비밀번호 : ${commentsByMember.mem_pass} --%>
-	<%-- 								book_status_num : ${commentsByMember.book_status_num} --%>
 						   </table>
 					  	</div>
 					</div>
@@ -190,7 +195,7 @@
 			<div style="margin-top: 100px;" class="col"></div>
 		</div>
 	</div>
-</div>
+
 	<template id="modifyComment">
 		<div class="alert alert-dismissible alert-secondary">
 			<strong>독서완료</strong>
@@ -425,7 +430,6 @@
 
 
 	
-// 		 # 도서 검색 버튼 클릭 시 도서 데이터 요청
 	   	 $(document).ready(function () {
 	  		
 //     		 # 상세페이지 실행하자마자 도서 데이터 요청
@@ -441,7 +445,7 @@
                
                 .done(function (msg) {	//검색 결과 담기 / [응답]
                 	console.log(msg);
-                        $("#bookThumbnail").append("<img style='width:400px; height:600px;' src='" + msg.documents[0].thumbnail + "'/><br>");		//표지
+                        $("#bookThumbnail").append("<img style='width:450px; height:580px;' src='" + msg.documents[0].thumbnail + "'/><br>");		//표지
                         $("#bookTitle").append("<h2>"+ msg.documents[0].title + "</h2>저자 : "+msg.documents[0].authors);	//제목
                         $("#bookInfo").append("<h4 style='display:inline' class='text-primary'>저자:</h4><h5 style='display:inline'> " + msg.documents[0].authors + "</h5><br>");		//저자	
                         $("#bookInfo").append("<h4 style='display:inline' class='text-primary'>출판사:</h4> <h5 style='display:inline'>" + msg.documents[0].publisher + "</h5><br>");		//출판사

@@ -38,14 +38,14 @@ public class MypageController {
 	 * 회원 정보 조회
 	 */
 	@GetMapping("/MyPage")
-	public String memberInfo(CommandLogin loginMember, Model model,
-			HttpSession session, HttpServletResponse response, Errors errors) {
+	public String memberInfo(CommandLogin loginMember, Model model, HttpSession session, HttpServletResponse response,
+			Errors errors) {
 
 		/**
 		 * 에러시 반환
 		 */
 		if (errors.hasErrors()) {
-			return "Mypage";
+			return "user/Mypage";
 		}
 
 		/**
@@ -54,10 +54,6 @@ public class MypageController {
 		MemberVO authInfo = null;
 		if (session != null) {
 			session.getAttribute("authInfo");
-		}
-
-		if (authInfo != null) {
-			return "redirect:/LoginMain";
 		}
 
 		authInfo = (MemberVO) session.getAttribute("authInfo");
@@ -76,21 +72,21 @@ public class MypageController {
 
 		model.addAttribute("myInfo", member);
 
-		return "Mypage";
+		return "user/Mypage";
 	}
 
 	/**
 	 * 회원 정보 수정 폼
 	 */
 	@GetMapping("/edit")
-	public String infoUpdateForm(CommandLogin loginMember, Model model,
-			HttpSession session, HttpServletResponse response, Errors errors) {
-		
+	public String infoUpdateForm(CommandLogin loginMember, Model model, HttpSession session,
+			HttpServletResponse response, Errors errors) {
+
 		/**
 		 * 에러시 반환
 		 */
 		if (errors.hasErrors()) {
-			return "Mypage";
+			return "user/Mypage";
 		}
 
 		/**
@@ -112,10 +108,10 @@ public class MypageController {
 		 * 세션 테이블에 다시 저장
 		 */
 		session.setAttribute("authInfo", authInfo);
-		
+
 		MemberVO member = mypageService.memberInfo(mem_num);
 		model.addAttribute("myInfo", member);
-		return "infoUpdate";
+		return "user/infoUpdate";
 	}
 
 	/**
@@ -123,10 +119,10 @@ public class MypageController {
 	 */
 	@PostMapping("/infoUpdate")
 	public String infoUpdate(@ModelAttribute("memInfoCmd") MemInfoUpdateCmd memInfoUpdateCmd,
-		HttpServletRequest request, Model model) throws IllegalStateException, IOException {
-		
+			HttpServletRequest request, Model model) throws IllegalStateException, IOException {
+
 		MultipartFile multipartFile = memInfoUpdateCmd.getFile();
-	
+
 		System.out.println(memInfoUpdateCmd.getMem_name());
 		System.out.println(memInfoUpdateCmd.getMem_id());
 		System.out.println(memInfoUpdateCmd.getMem_pass());
@@ -134,9 +130,9 @@ public class MypageController {
 		mypageService.updateMemInfo(memInfoUpdateCmd, multipartFile, request);
 
 		MemberVO profile = mypageService.memberInfo(memInfoUpdateCmd.getMem_num());
-		
+
 		model.addAttribute("profile", profile);
-		
+
 		return "redirect:/MyPage";
 	}
 
@@ -144,14 +140,14 @@ public class MypageController {
 	 * 탈퇴 폼
 	 */
 	@GetMapping("/delete")
-	public String infoDeleteForm(CommandLogin loginMember, Model model,
-			HttpSession session, HttpServletResponse response, Errors errors) {
+	public String infoDeleteForm(CommandLogin loginMember, Model model, HttpSession session,
+			HttpServletResponse response, Errors errors) {
 
 		/**
 		 * 에러시 반환
 		 */
 		if (errors.hasErrors()) {
-			return "Mypage";
+			return "user/Mypage";
 		}
 
 		/**
@@ -160,10 +156,6 @@ public class MypageController {
 		MemberVO authInfo = null;
 		if (session != null) {
 			session.getAttribute("authInfo");
-		}
-
-		if (authInfo != null) {
-			return "redirect:/LoginMain";
 		}
 
 		authInfo = (MemberVO) session.getAttribute("authInfo");
@@ -180,7 +172,7 @@ public class MypageController {
 
 		MemberVO member = mypageService.memberInfo(mem_num);
 		model.addAttribute("myInfo", member);
-		return "infoDelete";
+		return "user/infoDelete";
 	}
 
 	/**
@@ -211,14 +203,14 @@ public class MypageController {
 	 * 보관함
 	 */
 	@GetMapping("/bookShelf")
-	public String BookShelf(CommandLogin loginMember, Model model,
-			HttpSession session, HttpServletResponse response, Errors errors) {
-		
+	public String BookShelf(CommandLogin loginMember, Model model, HttpSession session, HttpServletResponse response,
+			Errors errors) {
+
 		/**
 		 * 에러시 반환
 		 */
 		if (errors.hasErrors()) {
-			return "LoginMain";
+			return "main";
 		}
 
 		/**
@@ -227,10 +219,6 @@ public class MypageController {
 		MemberVO authInfo = null;
 		if (session != null) {
 			session.getAttribute("authInfo");
-		}
-
-		if (authInfo != null) {
-			return "redirect:/LoginMain";
 		}
 
 		authInfo = (MemberVO) session.getAttribute("authInfo");
@@ -244,7 +232,6 @@ public class MypageController {
 		 * 세션 테이블에 다시 저장
 		 */
 		session.setAttribute("authInfo", authInfo);
-		
 
 		// 한 회원의 '찜' 도서 개수
 		int memLikeCount = mypageService.memLikeCount(mem_num);
@@ -273,8 +260,7 @@ public class MypageController {
 		model.addAttribute("MyCommentCount", memCommentCount);
 		model.addAttribute("MyComment", memComment);
 		model.addAttribute("completeIsbn", completeIsbn);
-		return "bookShelf";
-
+		
+		return "user/bookShelf";
 	}
-
 }

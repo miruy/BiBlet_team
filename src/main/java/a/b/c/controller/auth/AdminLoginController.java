@@ -86,7 +86,6 @@ public class AdminLoginController {
 
         } catch (IdPasswordNotMatchingException e) {
             errors.rejectValue("adm_pass", "IdPasswordNotMatching");
-            System.out.println("실패");
             return "auth/login_error";
         } catch (AuthstatusException e) {
             return "auth/email_error";

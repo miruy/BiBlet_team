@@ -8,7 +8,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>MainPage 로그인</title>
+		<title>BiBlet</title>
 	</head>
 	<body>
 		<div>

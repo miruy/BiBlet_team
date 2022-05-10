@@ -44,9 +44,8 @@ public class AppraisalController {
 	 * 도서 상세보기 - 해당 도서의 대한 모든 평가 추출
 	 */
 	@GetMapping("/read/{isbn}")
-	public String bookDetailAndComment(CommandLogin loginMember, Model model,
-			HttpSession session, HttpServletResponse response, Errors errors, 
-			@RequestParam(required = false) String query, 
+	public String bookDetailAndComment(CommandLogin loginMember, Model model, HttpSession session,
+			HttpServletResponse response, Errors errors, @RequestParam(required = false) String query,
 			@PathVariable String isbn) {
 
 		// 해당 도서의 대한 평가 개수
@@ -54,33 +53,30 @@ public class AppraisalController {
 
 		// 해당 도서의 대한 모든 평가 불러오기
 		List<AllCommentCmd> commentsByMembers = appraisalService.findAllComment(isbn);
-							
-		model.addAttribute("query", query);	//query.split(",")[0]
+
+		model.addAttribute("query", query); // query.split(",")[0]
 		model.addAttribute("isbn", isbn);
 		model.addAttribute("commentCount", commentCount);
 		model.addAttribute("commentsByMembers", commentsByMembers);
 
-		return "detailAndComment";
+		return "common/detailAndComment";
 	}
 
 	/**
 	 * 평가 등록
 	 */
 	@PostMapping("/read/{isbn}")
-	private String writeComment(@ModelAttribute("insertCmd") InsertCmd insertCmd,
-			CommandLogin loginMember, Model model,
+	private String writeComment(@ModelAttribute("insertCmd") InsertCmd insertCmd, CommandLogin loginMember, Model model,
 			HttpSession session, HttpServletResponse response, Errors errors) throws UnsupportedEncodingException {
-		
+
 		AppraisalVO appraisal = new AppraisalVO();
 		BookShelfVO bookShelf = new BookShelfVO();
-		String encodedParam = URLEncoder.encode(insertCmd.getQuery(), "UTF-8");
 
-		
 		/**
 		 * 에러시 반환
 		 */
 		if (errors.hasErrors()) {
-			return "detailAndComment";
+			return "common/detailAndComment";
 		}
 
 		/**
@@ -89,21 +85,20 @@ public class AppraisalController {
 		if (session == null || session.getAttribute("authInfo") == null) {
 			return "redirect:/";
 		}
-		
 
 		MemberVO authInfo = (MemberVO) session.getAttribute("authInfo");
-		
+
 		/**
 		 * Long mem_num으로 변환
 		 */
-		Long mem_num = authInfo.getMem_num();		
+		Long mem_num = authInfo.getMem_num();
 
 		bookShelf.setBook_status(insertCmd.getOption());
 		bookShelf.setMem_num(mem_num);
 		bookShelf.setIsbn(insertCmd.getIsbn());
-		
+
 		bookShelf = appraisalService.insertBookShelf(bookShelf);
-		
+
 		appraisal.setStar(insertCmd.getStar());
 		appraisal.setBook_comment(insertCmd.getBook_comment());
 		appraisal.setStart_date(insertCmd.getStart_date());
@@ -112,9 +107,7 @@ public class AppraisalController {
 		appraisal.setBook_status_num(bookShelf.getBook_status_num());
 
 		appraisalService.writeComment(appraisal);
-		
-	
-		
+
 		return "redirect:/read/" + insertCmd.getIsbn();
 	}
 
@@ -134,8 +127,7 @@ public class AppraisalController {
 		updateAppraisal.setCo_prv(updateCmd.getCo_prv());
 
 		appraisalService.updateComment(updateAppraisal);
-		
-		
+
 	}
 
 	/**
@@ -154,57 +146,56 @@ public class AppraisalController {
 	@ResponseBody
 	@PostMapping("/comment")
 	public ResponseEntity<?> modifyComment(@RequestBody PassCheckCmd passCheckCmd, HttpSession session) {
-		
+
 		if (session == null || session.getAttribute("authInfo") == null) {
 			return ResponseEntity.status(NOT_FOUND).build();
 		}
-		
+
 		MemberVO authInfo = (MemberVO) session.getAttribute("authInfo");
-		
-		
+
 		String mem_pass = appraisalService.getMemPass(passCheckCmd.getAppraisal_num());
-		
-		if (!authInfo.getMem_pass().equals(passCheckCmd.getPassCheck())|| !mem_pass.equals(passCheckCmd.getPassCheck())) {
+
+		if (!authInfo.getMem_pass().equals(passCheckCmd.getPassCheck())
+				|| !mem_pass.equals(passCheckCmd.getPassCheck())) {
 			return ResponseEntity.status(NOT_FOUND).build();
 		}
-		
+
 		CommentCmd comment = appraisalService.getComment(passCheckCmd.getAppraisal_num());
-		
+
 		return ResponseEntity.ok().body(comment);
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/passCheck")
 	public int passCheck(@RequestBody PassCheckCmd passCheckCmd, HttpSession session) {
-		
+
 		MemberVO authInfo = (MemberVO) session.getAttribute("authInfo");
-		
+
 		String mem_pass = appraisalService.getMemPass(passCheckCmd.getAppraisal_num());
-		
-		if (!authInfo.getMem_pass().equals(passCheckCmd.getPassCheck()) || !mem_pass.equals(passCheckCmd.getPassCheck())) {
+
+		if (!authInfo.getMem_pass().equals(passCheckCmd.getPassCheck())
+				|| !mem_pass.equals(passCheckCmd.getPassCheck())) {
 			return 0;
 		}
-	
+
 		return 1;
 	}
-	
 
 	/**
 	 * 독서 상태 등록
 	 */
 	@ResponseBody
 	@PostMapping("/insertStatus")
-	public String insertStatus(@RequestBody InsertCmd insertCmd,
-			CommandLogin loginMember, Model model,
+	public String insertStatus(@RequestBody InsertCmd insertCmd, CommandLogin loginMember, Model model,
 			HttpSession session, HttpServletResponse response, Errors errors) {
-		
+
 		BookShelfVO bookShelf = new BookShelfVO();
 
 		/**
 		 * 에러시 반환
 		 */
 		if (errors.hasErrors()) {
-			return "detailAndComment";
+			return "common/detailAndComment";
 		}
 
 		/**
@@ -215,27 +206,22 @@ public class AppraisalController {
 			session.getAttribute("authInfo");
 		}
 
-		if (authInfo != null) {
-			return "redirect:/";
-		}
-
 		authInfo = (MemberVO) session.getAttribute("authInfo");
 
 		/**
 		 * Long mem_num으로 변환
 		 */
 		Long mem_num = authInfo.getMem_num();
-		System.out.println(mem_num);
 		/**
 		 * 세션 테이블에 다시 저장
 		 */
-		session.setAttribute("authInfo", authInfo);		
+		session.setAttribute("authInfo", authInfo);
 
 		bookShelf.setBook_status(insertCmd.getOption());
 		bookShelf.setMem_num(mem_num);
 		bookShelf.setIsbn(insertCmd.getIsbn());
 		bookShelf = appraisalService.insertBookShelf(bookShelf);
-		
+
 		return null;
 	}
 }

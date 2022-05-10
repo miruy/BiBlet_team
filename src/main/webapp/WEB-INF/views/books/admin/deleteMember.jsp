@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 정보 삭제 페이지</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/adminbootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/registPage.css" type="text/css">
 
 </head>
@@ -36,7 +36,7 @@
 		</div>
 		<div class="form-group mt-3">
 		<a href="<c:url value="/adminPage"/>">
-			<button type="submit" class="btn btn-block btn-primary btn-lg">
+			<button type="button" class="btn btn-block btn-primary btn-lg">
 			<small><i class="far fa-user pr-2"></i>취소</small>
 			</button>
 			</a>

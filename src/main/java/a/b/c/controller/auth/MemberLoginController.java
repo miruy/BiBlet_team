@@ -51,9 +51,10 @@ public class MemberLoginController {
 	}
 
 	@PostMapping("/login")
-	public String login(@Valid CommandLogin loginMember, Errors errors, Model model, HttpSession session, HttpServletResponse response) throws Exception {
-		
-	    /**
+	public String login(@Valid CommandLogin loginMember, Errors errors, Model model, HttpSession session,
+			HttpServletResponse response) throws Exception {
+
+		/**
 		 * 에러시 반환
 		 */
 		if (errors.hasErrors()) {
@@ -62,11 +63,11 @@ public class MemberLoginController {
 
 		MemberVO authInfo = null;
 		try {
-			
+
 			if (session != null && session.getAttribute("authInfo") != null) {
 				return "redirect:/";
 			}
-			
+
 			/**
 			 * 로그인 인증하고 인증 객체 반환
 			 */
@@ -76,19 +77,19 @@ public class MemberLoginController {
 			 * 로그인 인증된 객체 세션 테이블에 저장
 			 */
 			session.setAttribute("authInfo", authInfo);
-			
+
 			/**
 			 * 아이디 기억하기를 클릭했다면 쿠키에 아이디 저장
 			 */
 			Cookie rememberCookie = new Cookie("REMEMBER", null);
 			rememberCookie.setMaxAge(0);
 			rememberCookie.setPath("/");
-			
+
 			if (loginMember.isRememberId()) {
 				rememberCookie = new Cookie("REMEMBER", authInfo.getMem_id());
 				rememberCookie.setMaxAge(60 * 60 * 24 * 7);
 			}
-			
+
 			response.addCookie(rememberCookie);
 
 			return "redirect:/";
@@ -106,21 +107,21 @@ public class MemberLoginController {
 	 */
 	@GetMapping("/findId")
 	public String findId() {
-		return "findId";
+		return "common/findId";
 	}
 
 	@PostMapping("/findId")
 	public String findid(MemberVO member, Model model, String mem_email) throws Exception {
-		
+
 		String findedId = loginService.findById(mem_email);
-		
-        if(findedId == null) {
-            return "auth/email_error";
-        }
-        
-        model.addAttribute("findedId", findedId);
-		return "findIdComplete";
-		
+
+		if (findedId == null) {
+			return "auth/email_error";
+		}
+
+		model.addAttribute("findedId", findedId);
+		return "common/findIdComplete";
+
 	}
 
 	@GetMapping("/logout")

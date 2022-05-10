@@ -36,7 +36,7 @@
 		</div>
 		<div class="form-group mt-3">
 		<a href="<c:url value="/adminPage"/>">
-			<button type="submit" class="btn btn-block btn-primary btn-lg">
+			<button type="button" class="btn btn-block btn-primary btn-lg">
 			<small><i class="far fa-user pr-2"></i>취소</small>
 			</button>
 			</a>

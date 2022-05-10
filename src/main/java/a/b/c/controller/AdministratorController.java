@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import a.b.c.model.AdministratorVO;
 import a.b.c.model.CommandListAppr;
 import a.b.c.model.MemberVO;
 import a.b.c.service.AdmPageService;
-import a.b.c.service.LoginService;
 import lombok.RequiredArgsConstructor;
 
 
@@ -187,13 +185,13 @@ public class AdministratorController {
 	@GetMapping("/adminPage/deleteMember/{mem_num}")
 	public String delete(@PathVariable int mem_num, Model model) {
 		model.addAttribute("mem_num", mem_num);
-		return "/deleteMember";
+		return "admin/deleteMember";
 	}
 	
 	@GetMapping("/adminPage/deleteComment/{appraisal_num}")
 	public String deleteComment(@PathVariable int appraisal_num,Model model) {
 		model.addAttribute("appraisal_num",appraisal_num);
-		return "/deleteComment";
+		return "admin/deleteComment";
 	}
 
 	@PostMapping(value = "/adminpage/deleteMember")

@@ -82,12 +82,12 @@
 											<div class="card-header">
 												<c:if test="${!empty MyComment}">
 													<c:forEach var="myComment" items="${MyComment}">
-						별점 : ${myComment.star}
-						평가 : ${myComment.book_comment}
-						<div class="row"></div>
-						시작 날짜 : ${myComment.start_date}
-						다 읽은 날짜 : ${myComment.end_date}
-						<input type="hidden" id="appraisal_num" name="appraisal_num"
+														별점 : ${myComment.star}
+														평가 : ${myComment.book_comment}
+														<div class="row"></div>
+														시작 날짜 : ${myComment.start_date}
+														다 읽은 날짜 : ${myComment.end_date}
+														<input type="hidden" id="appraisal_num" name="appraisal_num"
 															value="${myComment.appraisal_num}">
 														<div id="img${myComment.appraisal_num}"></div>
 													</c:forEach>
